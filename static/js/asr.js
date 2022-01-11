@@ -11,8 +11,8 @@ const speechRecorder = (stream) => {
     mediaRecorder.addEventListener('dataavailable', (e) => {
         recordedChunks.push(e.data);
         if (mediaRecorder.state == "inactive") {
-            let blob = new Blob(recordedChunks,{type: "audio/wav"});
-           
+            let blob = new Blob(recordedChunks, { type: "audio/wav" });
+
             const audioBlob = blob
             const audioUrl = URL.createObjectURL(audioBlob);
 
@@ -20,13 +20,23 @@ const speechRecorder = (stream) => {
             audioPlayer.src = audioUrl;
             downloadLink.href = audioUrl;
             let nameoffile = new Date().toISOString() + '.wav'
-            downloadLink.download = nameoffile ;
+            downloadLink.download = nameoffile;
 
             // blob = blobToFile(blob, nameoffile)
             // console.log(blob)
-            sendData(blob,nameoffile);
+            sendData(blob, nameoffile);
+            getOutput()
         }
-      });
+    });
+}
+
+async function getOutput() {
+    await fetch("/output").then(res => res.json()).then(data => {
+        const outputText = document.getElementById('output')
+        if (data !== "") {
+            outputText.innerHTML = data
+        }
+    })
 }
 
 // function blobToFile(theBlob, fileName){       
@@ -40,21 +50,21 @@ const speechRecorder = (stream) => {
 //     return theBlob;
 // }
 
-function sendData(blob,nameoffile) {
+function sendData(blob, nameoffile) {
     var form = new FormData();
     form.append('file', blob);
     form.append('fname', nameoffile);
     $.ajax({
         type: 'POST',
-        url:'/',
+        url: '/',
         data: form,
         cache: false,
         processData: false,
         contentType: false,
-        success: function(response) {
+        success: function (response) {
             console.log(response);
         },
-        error: function(error) {
+        error: function (error) {
             console.log(error);
         }
     });

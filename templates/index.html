@@ -46,14 +46,14 @@
         </button>
         </div> -->
         <div class="text-2sm">
-        <p class="font-medium " id="output">{{ predicted }}</p>
+        <p class="font-medium " id="output">Output text area.</p>
       </div>
       </div>
       </div>
     </div>
 
   
-    <script type="text/javascript" src="{{ url_for("static",filename="js/asr.js")}}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='js/asr.js')}}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='jquery.js') }}"></script>
   </body>
 </html>
